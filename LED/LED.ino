@@ -36,7 +36,7 @@ void neoPulse() {
     //
     //  The loop only evaluates given that the interval is within OSCIL_VAL and 5.
     while(i != OSCIL_VAL && i >= 5) {
-		//	In order to change pulse speed, vary number that increments commIncVal
+	//	In order to change pulse speed, vary number that increments commIncVal
         i = oscilPulse(commIncVal+=3); 
 
         //  Low to moderately bright green. 
