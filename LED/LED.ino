@@ -18,23 +18,28 @@ long commIncVal = 0;
 void setup() {
     Serial.begin(9600); 
     pixels.begin(); 
-    pixels.setPixelColor(0, pixels.Color(240,255,0));
+    setNeoPixelColor(pixels.Color(240, 255, 0));
 }
 
 void loop() {
+	neoPulse();
+}
+
+void neoPulse() {
     //  The following initializes the oscillating value, which will be
     //      anywhere from 0 to OSCIL_VAL/2
-    uint8_t i = oscilPulse(commIncVal++); 
+    int i = oscilPulse(commIncVal++); 
     
-    //  This loop is where the color intensities vary. The shorter the delay
+    //  This loop is where the intensities of green vary. The shorter the delay
     //      the smoother the transitions. Changing the incrementation value
     //      will also change smoothness.
     //
     //  The loop only evaluates given that the interval is within OSCIL_VAL and 5.
     while(i != OSCIL_VAL && i >= 5) {
+		//	In order to change pulse speed, vary number that increments commIncVal
         i = oscilPulse(commIncVal+=3); 
 
-        //  Vary brightness of LED at whatever color.
+        //  Low to moderately bright green. 
         pixels.setBrightness(i);
 
         //  Whenever changes are made to the pixel color, the show method must
@@ -47,7 +52,17 @@ void loop() {
 
     //  This will hold the current LED brightness/intensity at the end of every loop,
     //      signifiying the end of a light pattern as described above. 
-//  delay(10);
+	//  delay(10);
+}
+
+//  This function sets the color and displays the new color on the Neopixels.
+//      The Color "object" as seen when calling "pixels.Color(....)" is not an object
+//      but a method returning a packed 32-bit RGB color given a R, G, B values.
+//      It's a bit confusing since a structure would have been more appropriate.
+//  Ex. setNeoPixelColor(pixels.Color(0, 0, 255));
+void setNeoPixelColor(uint32_t neoColor) {
+    pixels.setPixelColor(0, pixels.Color(240, 255, 0));
+    pixels.show();
 }
 
 //  This is the mathematical function that allows pulsing concurrently with any
